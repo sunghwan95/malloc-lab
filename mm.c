@@ -81,8 +81,7 @@ static char *last_ptr;
 /* 
  * mm_init - initialize the malloc package.
  */
-int mm_init(void)
-{   
+int mm_init(void){   
     // mem_sbrk: 힙 영역을 incr(0이 아닌 양수) bytes 만큼 확장하고, 새로 할당된 힙 영역의 첫번째 byte를 가리키는 제네릭 포인터를 리턴함
     /* 비어있는 heap을 만든다.*/
     if((heap_listp = mem_sbrk(4*WSIZE)) == (void *)-1){
@@ -105,8 +104,7 @@ int mm_init(void)
     return 0;
 }
 
-static void *extend_heap(size_t words)
-{
+static void *extend_heap(size_t words){
     // 요청한 크기를 인접 2워드의 배수(8바이트)로 반올림하여, 그 후에 추가적인 힙 공간 요청
     char *ptr;
     size_t size;
@@ -124,8 +122,7 @@ static void *extend_heap(size_t words)
 };
 
 // 할당된 블록을 합칠 수 있는 경우 4가지에 따라 메모리 연결
-static void *coalesce(void *ptr)
-{
+static void *coalesce(void *ptr){
     size_t prev_alloc = GET_ALLOC(FTRP(PREV_BLKP(ptr)));
     size_t next_alloc = GET_ALLOC(HDRP(NEXT_BLKP(ptr)));
     size_t size = GET_SIZE(HDRP(ptr));
@@ -196,8 +193,7 @@ void *mm_malloc(size_t size){
 /*
  * mm_free - Freeing a block does nothing.
  */
-void mm_free(void *ptr)
-{
+void mm_free(void *ptr){
     size_t size = GET_SIZE(HDRP(ptr));
 
     PUT(HDRP(ptr), PACK(size, 0));
@@ -223,8 +219,7 @@ static void *find_fit(size_t asize){
 }
 */
 
-static void* next_fit(size_t asize)
-{
+static void* next_fit(size_t asize){
     char* ptr = last_ptr;
 
     for (ptr = NEXT_BLKP(ptr); GET_SIZE(HDRP(ptr))!=0; ptr = NEXT_BLKP(ptr))
@@ -274,8 +269,7 @@ static void place(void *ptr, size_t asize){
 /*
  * mm_realloc - Implemented simply in terms of mm_malloc and mm_free
  */
-void *mm_realloc(void *ptr, size_t size)
-{
+void *mm_realloc(void *ptr, size_t size){
     void *oldptr = ptr;
     void *newptr;
     size_t copySize;
